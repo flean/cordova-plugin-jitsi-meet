@@ -28,20 +28,17 @@
 	</platform>
 
 	<!-- ios -->
-		<platform name="ios">
-				<config-file target="config.xml" parent="/*">
-						<feature name="JitsiPlugin">
-								<param name="ios-package" value="JitsiPlugin"/>
-						</feature>
-				</config-file>
-
+	<platform name="ios">
+		<config-file target="config.xml" parent="/*">
+			<feature name="JitsiPlugin">
+					<param name="ios-package" value="JitsiPlugin"/>
+			</feature>
+		</config-file>
 		<header-file src="src/ios/JitsiMeetView.h" />
 		<header-file src="src/ios/JitsiMeetViewDelegate.h" />
-				<header-file src="src/ios/JitsiPlugin.h" />
-				<source-file src="src/ios/JitsiPlugin.mm" />
-
-				<framework src="./framework/JitsiMeet.framework" custom="true" />
-				<framework src="./framework/WebRTC.framework" custom="true" />
-
-		</platform>
+		<header-file src="src/ios/JitsiPlugin.h" />
+		<source-file src="src/ios/JitsiPlugin.mm" />
+		<framework src="./framework/JitsiMeet.framework" custom="true" />
+		<framework src="./framework/WebRTC.framework" custom="true" />
+	</platform>
 </plugin>
