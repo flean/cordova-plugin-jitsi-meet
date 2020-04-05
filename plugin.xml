@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<plugin id='cordova-plugin-jitsi' version='1.0.2' xmlns='http://apache.org/cordova/ns/plugins/1.0' xmlns:android='http://schemas.android.com/apk/res/android'>
+<?xml version='1.0' encoding='UTF-8'?>
+<plugin id='cordova-plugin-jitsi-meet' version='1.0.2' xmlns='http://apache.org/cordova/ns/plugins/1.0' xmlns:android='http://schemas.android.com/apk/res/android'>
 	<name>JitsiPlugin</name>
 	<js-module name='JitsiPlugin' src='www/JitsiPlugin.js'>
 		<clobbers target='jitsiplugin' />
@@ -38,7 +38,7 @@
 		<header-file src="src/ios/JitsiMeetViewDelegate.h" />
 		<header-file src="src/ios/JitsiPlugin.h" />
 		<source-file src="src/ios/JitsiPlugin.mm" />
-		<framework src="./framework/JitsiMeet.framework"/>
-		<framework src="./framework/WebRTC.framework"/>
+		<framework src="./framework/JitsiMeet.framework" custom="true"/>
+		<framework src="./framework/WebRTC.framework" custom="true"/>
 	</platform>
 </plugin>
