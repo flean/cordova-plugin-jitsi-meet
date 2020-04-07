@@ -9,11 +9,13 @@
 
 - (void)loadURL:(CDVInvokedUrlCommand *)command;
 - (void)destroy:(CDVInvokedUrlCommand *)command;
-- (void)backButtonPressed:(CDVInvokedUrlCommand *)command; 
-- (void)conferenceFailed:(NSDictionary *)data;
+
 - (void)conferenceJoined:(NSDictionary *)data;
-- (void)conferenceLeft:(NSDictionary *)data;
+- (void)conferenceTerminated:(NSDictionary *)data;
 - (void)conferenceWillJoin:(NSDictionary *)data;
+- (void)enterPictureInPicture:(NSDictionary *)data;
+
+- (void)conferenceLeft:(NSDictionary *)data;
 - (void)conferenceWillLeave:(NSDictionary *)data;
 - (void)loadConfigError:(NSDictionary *)data;
 

@@ -14,25 +14,29 @@ CDVPluginResult *pluginResult = nil;
     jitsiMeetView = [[JitsiMeetView alloc] initWithFrame:self.viewController.view.frame];
     jitsiMeetView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     jitsiMeetView.delegate = self;
-    jitsiMeetView.welcomePageEnabled = NO;
-    [jitsiMeetView loadURLObject:@{
-        @"config": @{
-            @"startWithAudioMuted": @NO,
-            @"startWithVideoMuted": @NO
-        },
-        @"url": url
+    JitsiMeetConferenceOptions *options
+        = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
+            builder.room = key;
+            builder.serverURL = [NSURL URLWithString:url];
+            builder.welcomePageEnabled = NO;
+            // [builder setFeatureFlag:@"calendar.enabled" withBoolean:NO];
+            // [builder setFeatureFlag:@"call-integration.enabled" withBoolean:YES];
+            // [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
+            // [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
+            // [builder setFeatureFlag:@"ios.recording.enabled" withBoolean:NO];
+            // [builder setFeatureFlag:@"pip.enabled" withBoolean:NO];
+             [builder setFeatureFlag:@"chat.enabled" withBoolean:NO];
     }];
+    [jitsiMeetView join:options];
     if (!isInvisible) {
        [self.viewController.view addSubview:jitsiMeetView];
     }
 }
 
-
 - (void)destroy:(CDVInvokedUrlCommand *)command {
-    if(jitsiMeetView){
-        [jitsiMeetView removeFromSuperview];
-        jitsiMeetView = nil;
-    }
+    [jitsiMeetView leave];
+    [jitsiMeetView removeFromSuperview];
+    jitsiMeetView = nil;
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"DESTROYED"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -58,6 +62,17 @@ void _onJitsiMeetViewDelegateEvent(NSString *name, NSDictionary *data) {
     [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
 }
 
+- (void)conferenceTerminated:(NSDictionary *)data {
+    [jitsiMeetView leave];
+    [jitsiMeetView removeFromSuperview];
+    jitsiMeetView = nil;
+    _onJitsiMeetViewDelegateEvent(@"CONFERENCE_TERMINATED", data);
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_TERMINATED"];
+    [pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
+}
+
+
 - (void)conferenceLeft:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_LEFT", data);
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_LEFT"];
@@ -69,6 +84,7 @@ void _onJitsiMeetViewDelegateEvent(NSString *name, NSDictionary *data) {
 - (void)conferenceWillJoin:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_WILL_JOIN", data);
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_WILL_JOIN"];
+    
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
 }
