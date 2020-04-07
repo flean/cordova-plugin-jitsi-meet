@@ -19,13 +19,14 @@ CDVPluginResult *pluginResult = nil;
             builder.room = key;
             builder.serverURL = [NSURL URLWithString:url];
             builder.welcomePageEnabled = NO;
-            // [builder setFeatureFlag:@"calendar.enabled" withBoolean:NO];
-            // [builder setFeatureFlag:@"call-integration.enabled" withBoolean:YES];
-            // [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
-            // [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
-            // [builder setFeatureFlag:@"ios.recording.enabled" withBoolean:NO];
-            // [builder setFeatureFlag:@"pip.enabled" withBoolean:NO];
-             [builder setFeatureFlag:@"chat.enabled" withBoolean:NO];
+            [builder setFeatureFlag:@"chat.enabled" withBoolean:YES];
+            [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
+            [builder setFeatureFlag:@"calendar.enabled" withBoolean:NO];
+            [builder setFeatureFlag:@"call-integration.enabled" withBoolean:YES];
+            [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
+            [builder setFeatureFlag:@"ios.recording.enabled" withBoolean:NO];
+            [builder setFeatureFlag:@"pip.enabled" withBoolean:YES];
+            
     }];
     [jitsiMeetView join:options];
     if (!isInvisible) {
