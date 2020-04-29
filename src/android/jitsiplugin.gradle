@@ -1,54 +1,37 @@
 repositories{
+	google()
 	jcenter()
 	maven {
 		url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
 	}
-	maven {
-		url "https://maven.google.com"
+	configurations.all {
+		resolutionStrategy {
+			force "com.google.android.gms:play-services-basement:15.0.1"
+			force "com.google.android.gms:play-services-tasks:15.0.1"
+		}
 	}
 }
 android {
 	compileSdkVersion 26
-    	buildToolsVersion "26.0.1"
-    
+	buildToolsVersion "28.0.3"
 	defaultConfig {
 		minSdkVersion 21
 		targetSdkVersion 26
 		multiDexEnabled true
 		ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-		}
-
-		packagingOptions {
-		    // The project react-native does not provide 64-bit binaries at the
-		    // time of this writing. Unfortunately, packaging any 64-bit
-		    // binaries into the .apk will crash the app at runtime on 64-bit
-		    // platforms.
-		    // exclude '/lib/mips64/**'
-		    // exclude '/lib/arm64-v8a/**'
-		    // exclude '/lib/x86_64/**'
+			abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
 		}
 	}
-	
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_8
 		targetCompatibility JavaVersion.VERSION_1_8
 	}
-	
 	dexOptions {
-        	jumboMode = true
-    	}
+			jumboMode = true
+	}
 }
 dependencies {
-//org.jitsi.react:jitsi-meet-sdk:2.+ org.jitsi.react:jitsi-meet-sdk:1.9.0@aar
-	compile  ('org.jitsi.react:jitsi-meet-sdk:2.+') {
-		transitive = true;
-	}
-
-	//implementation "com.android.support:appcompat-v7:27.1.0"	
+	implementation ('org.jitsi.react:jitsi-meet-sdk:2.+') { transitive = true }
 	implementation 'androidx.appcompat:appcompat:1.1.0'
-    	implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-	//compile  "com.android.support:appcompat-v7:27.1.0"
-	//compile  "com.android.support:recyclerview-v7:27.1.0"
-	//compile  "com.android.support:design:27.1.0"
+	implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

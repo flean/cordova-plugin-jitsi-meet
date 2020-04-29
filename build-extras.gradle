@@ -1,7 +1,7 @@
 android {
 	compileSdkVersion 26
-    buildToolsVersion "26.0.1"
-    
+		buildToolsVersion "26.0.1"
+		
 	defaultConfig {
 		minSdkVersion 21
 		targetSdkVersion 26
@@ -9,6 +9,6 @@ android {
 	}
 	packagingOptions {
 		exclude 'META-INF/NOTICE'
-		exclude 'META-INF/LICENSE’
+		exclude 'META-INF/LICENSE'
 	}
 }

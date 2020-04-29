@@ -10,6 +10,7 @@ CDVPluginResult *pluginResult = nil;
     NSString* url = [command.arguments objectAtIndex:0];
     NSString* key = [command.arguments objectAtIndex:1];
     Boolean isInvisible = [[command.arguments objectAtIndex:2] boolValue];
+    // NSString* displayName = [command.arguments objectAtIndex:3];
     commandBack = command;
     jitsiMeetView = [[JitsiMeetView alloc] initWithFrame:self.viewController.view.frame];
     jitsiMeetView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -17,6 +18,8 @@ CDVPluginResult *pluginResult = nil;
     JitsiMeetConferenceOptions *options
         = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
             builder.room = key;
+            builder.subject = "Modulus";
+            // builder.userinfo?.displayName = displayName;
             builder.serverURL = [NSURL URLWithString:url];
             builder.welcomePageEnabled = NO;
             [builder setFeatureFlag:@"chat.enabled" withBoolean:YES];

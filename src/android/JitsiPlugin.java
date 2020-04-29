@@ -18,12 +18,14 @@ import java.net.URL;
 import android.os.Bundle;
 
 import org.jitsi.meet.sdk.JitsiMeetView;
+// import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.jitsi.meet.sdk.JitsiMeetViewListener;
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetActivityDelegate;
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface;
+
 import android.view.View;
 
 import org.apache.cordova.CordovaWebView;
@@ -52,7 +54,9 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
     if (action.equals("loadURL")) {
       String url = args.getString(0);
       String key = args.getString(1);
-      this.loadURL(url, key, callbackContext);
+      // String displayName = args.getString(3);
+      // this.loadURL(url, key , displayName , callbackContext);
+      this.loadURL(url, key , callbackContext);
       return true;
     } else if (action.equals("destroy")) {
       this.destroy(callbackContext);
@@ -102,6 +106,7 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
     }
   }
 
+  // private void loadURL(final String url, final String key, final String displayName, final CallbackContext callbackContext) {
   private void loadURL(final String url, final String key, final CallbackContext callbackContext) {
     Log.e(TAG, "loadURL called : "+url);
     
@@ -117,16 +122,20 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
             e.printStackTrace();
             throw new RuntimeException("Invalid server URL!");
         }
-        
-        JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()          
+        // JitsiMeetUserInfo userInfo = new JitsiMeetUserInfo();
+        // userInfo.setDisplayName(displayName);
+        JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
           .setRoom(url)
-          .setSubject(" ")
+          .setSubject("Modulus")
+          // .setUserInfo(userInfo)
           .setFeatureFlag("chat.enabled", false)
-          .setFeatureFlag("invite.enabled", false)          
+          .setFeatureFlag("invite.enabled", false)
+          .setFeatureFlag("call-integration.enabled", true)
+          .setFeatureFlag("close-captions.enabled", false)
+          .setFeatureFlag("pip.enabled", true)
           .setFeatureFlag("calendar.enabled", false)
           .setWelcomePageEnabled(false)
           .build();
-                
 //         view.join(options);
 //         setJitsiListener(view, callbackContext);
 //         view.setWelcomePageEnabled(false);
