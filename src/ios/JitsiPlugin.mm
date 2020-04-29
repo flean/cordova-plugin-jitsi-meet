@@ -9,8 +9,8 @@ CDVPluginResult *pluginResult = nil;
 - (void)loadURL:(CDVInvokedUrlCommand *)command {
     NSString* url = [command.arguments objectAtIndex:0];
     NSString* key = [command.arguments objectAtIndex:1];
-    Boolean isInvisible = [[command.arguments objectAtIndex:2] boolValue];
-    // NSString* displayName = [command.arguments objectAtIndex:3];
+    NSString* displayName = [command.arguments objectAtIndex:2];
+    Boolean isInvisible = [[command.arguments objectAtIndex:3] boolValue];
     commandBack = command;
     jitsiMeetView = [[JitsiMeetView alloc] initWithFrame:self.viewController.view.frame];
     jitsiMeetView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -18,17 +18,21 @@ CDVPluginResult *pluginResult = nil;
     JitsiMeetConferenceOptions *options
         = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
             builder.room = key;
-            builder.subject = "Modulus";
-            // builder.userinfo?.displayName = displayName;
+            builder.subject = @"Modulus";
+            builder.userInfo.displayName = displayName;
             builder.serverURL = [NSURL URLWithString:url];
             builder.welcomePageEnabled = NO;
+            [builder setFeatureFlag:@"add-people.enabled" withBoolean:NO];
+            [builder setFeatureFlag:@"live-streaming.enabled" withBoolean:NO];
+            [builder setFeatureFlag:@"meeting-name.enabled" withBoolean:YES];
+            [builder setFeatureFlag:@"meeting-password.enabled" withBoolean:NO];
             [builder setFeatureFlag:@"chat.enabled" withBoolean:YES];
             [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
             [builder setFeatureFlag:@"calendar.enabled" withBoolean:NO];
             [builder setFeatureFlag:@"call-integration.enabled" withBoolean:YES];
             [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
             [builder setFeatureFlag:@"ios.recording.enabled" withBoolean:NO];
-            [builder setFeatureFlag:@"pip.enabled" withBoolean:YES];
+            [builder setFeatureFlag:@"pip.enabled" withBoolean:NO];
             
     }];
     [jitsiMeetView join:options];

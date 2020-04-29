@@ -18,13 +18,13 @@ import java.net.URL;
 import android.os.Bundle;
 
 import org.jitsi.meet.sdk.JitsiMeetView;
-// import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.jitsi.meet.sdk.JitsiMeetViewListener;
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetActivityDelegate;
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface;
+import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 
 import android.view.View;
 
@@ -54,9 +54,10 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
     if (action.equals("loadURL")) {
       String url = args.getString(0);
       String key = args.getString(1);
-      // String displayName = args.getString(3);
-      // this.loadURL(url, key , displayName , callbackContext);
-      this.loadURL(url, key , callbackContext);
+      String displayName = args.getString(2);
+      String other = args.getString(3);
+      this.loadURL(url, key , displayName , callbackContext);
+      Log.e(TAG, "action displayName : "+displayName);
       return true;
     } else if (action.equals("destroy")) {
       this.destroy(callbackContext);
@@ -106,110 +107,41 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
     }
   }
 
-  // private void loadURL(final String url, final String key, final String displayName, final CallbackContext callbackContext) {
-  private void loadURL(final String url, final String key, final CallbackContext callbackContext) {
+  private void loadURL(final String url, final String key, final String displayName, final CallbackContext callbackContext) {
     Log.e(TAG, "loadURL called : "+url);
-    
+
     cordova.getActivity().runOnUiThread(new Runnable() {
-      public void run() {       
+      public void run() {
         Context context = cordova.getActivity();
-        //view = new JitsiMeetView(context);
-      //  Initialize default options for Jitsi Meet conferences.
         URL serverURL;
-        try {          
+        try {
             serverURL = new URL(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             throw new RuntimeException("Invalid server URL!");
         }
-        // JitsiMeetUserInfo userInfo = new JitsiMeetUserInfo();
-        // userInfo.setDisplayName(displayName);
+        JitsiMeetUserInfo userInfo = new JitsiMeetUserInfo();
+        userInfo.setDisplayName(displayName);
         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
           .setRoom(url)
           .setSubject("Modulus")
-          // .setUserInfo(userInfo)
+          .setUserInfo(userInfo)
+          .setFeatureFlag("add-people.enabled", false)
+          .setFeatureFlag("live-streaming.enabled", false)
+          .setFeatureFlag("meeting-name.enabled", false)
+          .setFeatureFlag("meeting-password.enabled", false)
           .setFeatureFlag("chat.enabled", false)
           .setFeatureFlag("invite.enabled", false)
           .setFeatureFlag("call-integration.enabled", true)
           .setFeatureFlag("close-captions.enabled", false)
-          .setFeatureFlag("pip.enabled", true)
+          .setFeatureFlag("pip.enabled", false)
           .setFeatureFlag("calendar.enabled", false)
           .setWelcomePageEnabled(false)
           .build();
-//         view.join(options);
-//         setJitsiListener(view, callbackContext);
-//         view.setWelcomePageEnabled(false);
-//         Bundle config = new Bundle();
-//         config.putBoolean("startWithAudioMuted", false);
-//         config.putBoolean("startWithVideoMuted", false);
-//         Bundle urlObject = new Bundle();
-//         urlObject.putBundle("config", config);
-//         urlObject.putString("url", url);
-//         view.loadURLObject(urlObject);
-//             cordova.getActivity().setContentView(view);
         JitsiMeetActivity.launch(cordova.getActivity(), options);
       }
     });
   }
-
-//   private void setJitsiListener(JitsiMeetView view, final CallbackContext callbackContext) {
-
-//     view.setListener(new JitsiMeetViewListener() {
-//       PluginResult pluginResult;
-
-//       private void on(String name, Map<String, Object> data) {
-//         Log.d("ReactNative", JitsiMeetViewListener.class.getSimpleName() + " " + name + " " + data);
-//       }
-
-//       @Override
-//       public void onConferenceFailed(Map<String, Object> data) {
-//         on("CONFERENCE_FAILED", data);
-//         pluginResult = new PluginResult(PluginResult.Status.OK, new JSONObject(data));
-//         pluginResult.setKeepCallback(true);
-//         callbackContext.sendPluginResult(pluginResult);
-//       }
-
-//       @Override
-//       public void onConferenceJoined(Map<String, Object> data) {
-//         on("CONFERENCE_JOINED", data);
-//         pluginResult = new PluginResult(PluginResult.Status.OK, "CONFERENCE_JOINED");
-//         pluginResult.setKeepCallback(true);
-//         callbackContext.sendPluginResult(pluginResult);
-//       }
-
-//       @Override
-//       public void onConferenceLeft(Map<String, Object> data) {
-//         on("CONFERENCE_LEFT", data);
-//         pluginResult = new PluginResult(PluginResult.Status.OK, "CONFERENCE_LEFT");
-//         pluginResult.setKeepCallback(true);
-//         callbackContext.sendPluginResult(pluginResult);
-//       }
-
-//       @Override
-//       public void onConferenceWillJoin(Map<String, Object> data) {
-//         on("CONFERENCE_WILL_JOIN", data);
-//         pluginResult = new PluginResult(PluginResult.Status.OK, "CONFERENCE_WILL_JOIN");
-//         pluginResult.setKeepCallback(true);
-//         callbackContext.sendPluginResult(pluginResult);
-//       }
-
-//       @Override
-//       public void onConferenceWillLeave(Map<String, Object> data) {
-//         on("CONFERENCE_WILL_LEAVE", data);
-//         pluginResult = new PluginResult(PluginResult.Status.OK, "CONFERENCE_WILL_LEAVE");
-//         pluginResult.setKeepCallback(true);
-//         callbackContext.sendPluginResult(pluginResult);
-//       }
-
-//       @Override
-//       public void onLoadConfigError(Map<String, Object> data) {
-//         on("LOAD_CONFIG_ERROR", data);
-//         pluginResult = new PluginResult(PluginResult.Status.OK, "LOAD_CONFIG_ERROR");
-//         pluginResult.setKeepCallback(true);
-//         callbackContext.sendPluginResult(pluginResult);
-//       }
-//     });
-//   }
 
   private void destroy(final CallbackContext callbackContext) {
     cordova.getActivity().runOnUiThread(new Runnable() {
