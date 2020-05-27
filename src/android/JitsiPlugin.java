@@ -53,10 +53,10 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
 
     if (action.equals("loadURL")) {
       String url = args.getString(0);
-      String key = args.getString(1);
-      String displayName = args.getString(2);
-      String other = args.getString(3);
-      this.loadURL(url, key , displayName , callbackContext);
+      String room = args.getString(1);
+      String token = args.getString(2);
+      String displayName = args.getString(3);
+      this.loadURL(url, room , token , displayName , callbackContext);
       Log.e(TAG, "action displayName : "+displayName);
       return true;
     } else if (action.equals("destroy")) {
@@ -107,7 +107,7 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
     }
   }
 
-  private void loadURL(final String url, final String key, final String displayName, final CallbackContext callbackContext) {
+  private void loadURL(final String url, final String room, final String token, final String displayName, final CallbackContext callbackContext) {
     Log.e(TAG, "loadURL called : "+url);
 
     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -123,7 +123,9 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
         JitsiMeetUserInfo userInfo = new JitsiMeetUserInfo();
         userInfo.setDisplayName(displayName);
         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
-          .setRoom(url)
+          .setServerURL(serverURL)
+          .setRoom(room)
+          .setToken(token)
           .setSubject("Modulus")
           .setUserInfo(userInfo)
           .setFeatureFlag("add-people.enabled", false)
