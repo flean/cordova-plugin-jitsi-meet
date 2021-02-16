@@ -29,19 +29,23 @@
 
 	<!-- ios -->
 		<platform name="ios">
-				<config-file target="config.xml" parent="/*">
-						<feature name="JitsiPlugin">
-								<param name="ios-package" value="JitsiPlugin"/>
-						</feature>
-				</config-file>
+			<config-file target="config.xml" parent="/*">
+				<feature name="JitsiPlugin">
+					<param name="ios-package" value="JitsiPlugin"/>
+				</feature>
+			</config-file>
 
-		<header-file src="src/ios/JitsiMeetView.h" />
-		<header-file src="src/ios/JitsiMeetViewDelegate.h" />
-				<header-file src="src/ios/JitsiPlugin.h" />
-				<source-file src="src/ios/JitsiPlugin.mm" />
+			<header-file src="src/ios/JitsiMeetView.h" />
+			<header-file src="src/ios/JitsiMeetConferenceOptions.h" />
+			<header-file src="src/ios/JitsiMeetViewDelegate.h" />
+			<header-file src="src/ios/JitsiMeetUserInfo.h" />
+			<header-file src="src/ios/JitsiPlugin.h" />
+			<source-file src="src/ios/JitsiPlugin.mm" />
 
-				<framework src="./framework/JitsiMeet.framework" custom="true" />
-				<framework src="./framework/WebRTC.framework" custom="true" />
+			<source-file src="./framework/JitsiMeet.framework" target-dir="lib" framework="true" />
+			<source-file src="./framework/WebRTC.framework" target-dir="lib" framework="true" />
+			<framework src="./framework/JitsiMeet.framework" custom="true" embed="true" />
+			<framework src="./framework/WebRTC.framework" custom="true" embed="true" />
 
 		</platform>
 </plugin>
